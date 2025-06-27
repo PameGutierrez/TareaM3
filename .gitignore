@@ -1,13 +1,11 @@
 # Created by venv; see https://docs.python.org/3/library/venv.html
-# Ignora el entorno virtual
-venv/
+
 
 # Ignora los archivos compilados de Python
 __pycache__/
 *.py[cod]
 
-# Ignora tu configuración local de VS Code
-.vscode/
+
 
 # Si usas logs o archivos temporales:
 *.log
