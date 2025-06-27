@@ -31,7 +31,7 @@ class ItemDaoImpl(ItemDao):
             if existente.id == item.id:
                 self._almacen[idx] = item
                 return
-        raise ValueError("Item no encontrado")
+        raise ValueError("No encontrado")
 
     def delete(self, id: int) -> None:
         self._almacen = [i for i in self._almacen if i.id != id]
