@@ -1,6 +1,6 @@
 
 import pytest
-from crud_tdd.dao import ItemDao
+from crud_tdd.dao import ItemDao, ItemDaoImpl  
 from crud_tdd.models import Item
 
 class DummyDao(ItemDao):
