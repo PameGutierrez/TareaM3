@@ -2,7 +2,7 @@
 import sqlite3
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent.parent / "crud_tdd.db"
+DB_PATH     = Path(__file__).parent.parent / "crud_tdd.db"
 SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 
 def init_db():
@@ -13,3 +13,11 @@ def init_db():
         conn.executescript(f.read())
     conn.commit()
     conn.close()
+
+class ConnectionFactory:
+    """Abstrae sqlite3.connect para inyección."""
+    def __init__(self, db_path=DB_PATH):
+        self._db_path = db_path
+
+    def get_connection(self):
+        return sqlite3.connect(self._db_path)
