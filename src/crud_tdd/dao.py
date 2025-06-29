@@ -51,15 +51,18 @@ class ItemDaoSqlImpl:
         # Se conecta usando la factoría inyectada
         return self._conn_factory.get_connection()
 
-    def create(self, item: Item) -> None:
+    def create(self, item: Item) -> Item:
         conn = self._connect()
-        cur = conn.cursor()
+        cur  = conn.cursor()
         cur.execute(
             "INSERT INTO items(nombre) VALUES(?)",
             (item.nombre,)
-        )
+    )
+        # Captura la clave primaria que SQLite acaba de generar
+        item.id = cur.lastrowid
         conn.commit()
         conn.close()
+        return item
 
     def read_all(self) -> List[Item]:
         conn = self._connect()
