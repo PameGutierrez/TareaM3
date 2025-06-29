@@ -10,8 +10,7 @@ class ItemService:
     def crear_item(self, item: Item) -> Item:
         if not item.nombre:
             raise ValueError("El nombre no puede estar vacío")
-        self._dao.create(item)
-        return item
+        return self._dao.create(item)
 
     def obtener_todos(self) -> List[Item]:
         return self._dao.read_all()

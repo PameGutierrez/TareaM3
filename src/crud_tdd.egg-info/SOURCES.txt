@@ -1,0 +1,7 @@
+setup.py
+src/crud_tdd.egg-info/PKG-INFO
+src/crud_tdd.egg-info/SOURCES.txt
+src/crud_tdd.egg-info/dependency_links.txt
+src/crud_tdd.egg-info/top_level.txt
+tests/test_dao.py
+tests/test_models.py
