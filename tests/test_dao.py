@@ -42,3 +42,30 @@ def test_delete_exitoso():
     dao.create(Item(1, "X"))
     dao.delete(1)
     assert dao.read_all() == []
+
+from crud_tdd.db import init_db
+from crud_tdd.dao import ItemDaoSqlImpl
+from crud_tdd.models import Item
+
+class TestItemDaoSql:
+    def setup_method(self):
+        init_db()
+        self.dao = ItemDaoSqlImpl()
+
+    def test_create_y_read_all_sql(self):
+        self.dao.create(Item(nombre="JDBC"))
+        lista = self.dao.read_all()
+        assert any(i.nombre == "JDBC" for i in lista)
+
+    def test_update_sql(self):
+        self.dao.create(Item(nombre="Antes"))
+        item = self.dao.read_all()[0]
+        item.nombre = "Después"
+        self.dao.update(item)
+        assert self.dao.read_all()[0].nombre == "Después"
+
+    def test_delete_sql(self):
+        self.dao.create(Item(nombre="X"))
+        id_ = self.dao.read_all()[0].id
+        self.dao.delete(id_)
+        assert self.dao.read_all() == []
