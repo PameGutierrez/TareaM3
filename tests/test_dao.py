@@ -2,16 +2,15 @@
 import os
 import pytest
 
-from crud_tdd.dao      import ItemDao, ItemDaoImpl, ItemDaoSqlImpl
-from crud_tdd.models   import Item
-from crud_tdd.db       import DB_PATH, init_db
+from crud_tdd.dao import ItemDao, ItemDaoImpl, ItemDaoSqlImpl
+from crud_tdd.models import Item
+from crud_tdd.db import DB_PATH, init_db, ConnectionFactory
 
 @pytest.fixture(autouse=True)
 def reset_db_file():
-    # Antes de cada test, elimina el fichero de BD si existe
+    # Antes de cada test, elimina el fichero de BD si existe y vuelve a crear esquema
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
-    # Luego recrea la base de datos vacía
     init_db()
 
 # ——————————————————————————————
@@ -64,7 +63,9 @@ def test_delete_exitoso():
 
 class TestItemDaoSql:
     def setup_method(self, method):
-        self.dao = ItemDaoSqlImpl()
+        # Inyección de la factoría de conexión para DIP
+        conn_fac = ConnectionFactory()
+        self.dao = ItemDaoSqlImpl(conn_fac)
 
     def test_create_y_read_all_sql(self):
         self.dao.create(Item(nombre="JDBC"))
@@ -83,3 +84,4 @@ class TestItemDaoSql:
         id_ = self.dao.read_all()[0].id
         self.dao.delete(id_)
         assert self.dao.read_all() == []
+
