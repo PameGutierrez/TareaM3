@@ -1,38 +1,45 @@
 # src/crud_tdd/dao.py
 
-from crud_tdd.models import Item
+import sqlite3
 from typing import List
+from crud_tdd.models import Item
+from crud_tdd.db import DB_PATH
 
-class ItemDao:
-    def create(self, item: Item) -> None:
-        raise NotImplementedError
-
-    def read_all(self) -> List[Item]:
-        raise NotImplementedError
-
-    def update(self, item: Item) -> None:
-        raise NotImplementedError
-
-    def delete(self, id: int) -> None:
-        raise NotImplementedError
-
-class ItemDaoImpl(ItemDao):
-    def __init__(self):
-        self._almacen: List[Item] = []
+class ItemDaoSqlImpl:
+    def _connect(self):
+        return sqlite3.connect(DB_PATH)
 
     def create(self, item: Item) -> None:
-        self._almacen.append(item)
+        sql = "INSERT INTO items(nombre) VALUES(?)"
+        conn = self._connect()
+        cur = conn.cursor()
+        cur.execute(sql, (item.nombre,))
+        conn.commit()
+        conn.close()
 
     def read_all(self) -> List[Item]:
-        return list(self._almacen)
+        sql = "SELECT id, nombre FROM items"
+        conn = self._connect()
+        cur = conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        conn.close()
+        return [Item(id=row[0], nombre=row[1]) for row in rows]
 
     def update(self, item: Item) -> None:
-        for idx, existente in enumerate(self._almacen):
-            if existente.id == item.id:
-                self._almacen[idx] = item
-                return
-        raise ValueError("No encontrado")
+        sql = "UPDATE items SET nombre = ? WHERE id = ?"
+        conn = self._connect()
+        cur = conn.cursor()
+        cur.execute(sql, (item.nombre, item.id))
+        if cur.rowcount == 0:
+            raise ValueError("Item no encontrado")
+        conn.commit()
+        conn.close()
 
     def delete(self, id: int) -> None:
-        self._almacen = [i for i in self._almacen if i.id != id]
-
+        sql = "DELETE FROM items WHERE id = ?"
+        conn = self._connect()
+        cur = conn.cursor()
+        cur.execute(sql, (id,))
+        conn.commit()
+        conn.close()
