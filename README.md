@@ -15,3 +15,8 @@ Proyecto Python que implementa un CRUD con TDD y SQLite.
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+
+## Inicializar base de datos
+
+```bash
+python -c "from crud_tdd.db import init_db; init_db()"
