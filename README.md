@@ -43,14 +43,14 @@ cd TareaM3
 ## Estructura del proyecto
 
 ```
-TareaM3/
+TareaM3/               ← carpeta raíz del proyecto
 ├── README.md
 ├── main.py             # Demo de CRUD vía ItemService
 ├── requirements.txt
 ├── pytest.ini          # Configuración pytest (ruta src/)
 ├── .github/
 │   └── workflows/      # GitHub Actions CI (pytest, cobertura)
-├── htmlcov/            # Reporte HTML de cobertura
+├── htmlcov/            # Reporte HTML de cobertura (open index.html)
 ├── src/
 │   └── crud_tdd/
 │       ├── models.py   # Modelo Item
@@ -63,7 +63,7 @@ TareaM3/
 
 ## Ejecutar la demo
 
-Puedes ver un flujo completo de creación, lectura, actualización y borrado ejecutando:
+Muestra un flujo completo de operaciones CRUD:
 
 ```bash
 python main.py
@@ -77,36 +77,28 @@ pytest -q
 
 ## Cobertura de tests
 
-Mide la cobertura y genera un reporte HTML:
-
 ```bash
 pytest --cov=crud_tdd --cov-report html -q
 ```
 
-Luego abre en tu navegador:
+Luego abre en tu navegador [`htmlcov/index.html`](htmlcov/index.html) para ver el informe.
 
-```
-htmlcov/index.html
-```
-
-y verifica que la cobertura global sea ≥ 80 %.
+> Cobertura global adecuada: ≥ 80 %
 
 ## Integración continua (GitHub Actions)
 
-Se incluye un workflow en `.github/workflows/python-ci.yml` que:
+Se incluye un workflow en [`.github/workflows/python-ci.yml`](.github/workflows/python-ci.yml) que:
 
 1. Ejecuta pytest en cada push/pull\_request a `main`.
 2. Genera un reporte de cobertura.
 
-Puedes ver el estado en la pestaña **Actions** de tu repositorio.
+Puedes ver el estado en la pestaña [**Actions**](https://github.com/PameGutierrez/TareaM3/actions) de tu repositorio.
 
 ## Buenas prácticas aplicadas
 
-* **TDD**: El historial de commits sigue el ciclo Red-Green-Refactor.
+* **TDD**: historial de commits siguiendo Red → Green → Refactor.
 * **SRP**: `ItemService` gestiona reglas de negocio; `dao.py` se encarga solo de persistencia.
 * **DIP**: `ItemDaoSqlImpl` recibe la `ConnectionFactory`, evitando dependencias directas a SQLite.
-* **DRY/KISS**: Código modular y legible, sin duplicaciones.
+* **DRY/KISS**: código modular y legible, sin duplicaciones.
 
 ---
-
-
